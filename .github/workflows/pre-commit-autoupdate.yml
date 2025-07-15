@@ -1,0 +1,46 @@
+name: pre-commit autoupdate
+
+on:
+  schedule:
+    - cron: '0 0 1 1,4,7,10 *' # runs quarterly
+  workflow_dispatch:
+
+jobs:
+  autoupdate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PRE_COMMIT_PAT }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install pre-commit
+        run: pip install pre-commit
+      - name: Run pre-commit autoupdate
+        run: pre-commit autoupdate
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet .pre-commit-config.yaml; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Create Pull Request
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.PRE_COMMIT_PAT }}
+          branch: autoupdate/pre-commit
+          delete-branch: true
+          title: 'chore(pre-commit): autoupdate hooks'
+          commit-message: 'chore(pre-commit): autoupdate hooks'
+          body: |
+            This PR was created automatically by a workflow to update pre-commit hooks.
+            
+            ## Changes
+            - Updated pre-commit hook versions to their latest releases
+            
+            Please review the changes and merge if everything looks good.
