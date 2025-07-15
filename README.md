@@ -92,26 +92,6 @@ We've benchmarked the C++ bindings against the Python implementation across diff
 | 10         | 0.092s     | 0.0036s | 0.528s      | 0.370s   | 
 | 100        | 0.026s     | 0.0036s | 0.414s      | 0.352s   | 
 
-#### Performance Analysis
-
-**C++ CPU - Ultimate Performance:**
-- **Exceptional speed**: Up to 1,851x faster than Python CPU
-- **Sub-millisecond latency**: Consistent 0.3-3.7ms performance
-- **Memory efficient**: Direct memory access without GPU transfer overhead
-- **Production optimal**: Best choice for inference servers
-
-**C++ CUDA - GPU Integration:**
-- **GPU-ready tensors**: Direct CUDA memory allocation
-- **Faster than Python CUDA**: 2.9-4.3x improvement
-- **Good for GPU workflows**: When tensors need to be on GPU anyway
-- **Transfer overhead**: Includes CPU→GPU memory transfer time
-
-**Key Insights:**
-1. **C++ CPU dominates**: Fastest across all scenarios due to zero-copy access
-2. **CUDA has transfer overhead**: CPU→GPU memory copy adds latency
-3. **Choose CPU for pure speed**: Use CUDA only when GPU tensors are required
-4. **Consistent C++ advantage**: Superior performance regardless of device or iterations
-
 **Performance Testing:**
 ```bash
 # Comprehensive benchmark comparison
