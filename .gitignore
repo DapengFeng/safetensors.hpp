@@ -8,3 +8,9 @@ install/
 # Python
 __pycache__/
 *.pyc
+
+# Rust
+*.lock
+
+# model files
+*.safetensors
